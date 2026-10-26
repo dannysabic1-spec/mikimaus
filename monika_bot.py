@@ -21,7 +21,7 @@ except ImportError:
 #              KONFIGURACIJA
 # ══════════════════════════════════════════════
 BOT_NAME   = "MONIKA BOT"
-VERSION    = "v4.5"
+VERSION    = "v4.5.1"
 TOKEN      = os.environ.get("DISCORD_TOKEN")
 BOT_PREFIX = "."
 
@@ -6472,16 +6472,31 @@ class TicTacToeView(discord.ui.View):
             self.add_item(button)
 
     def make_embed(self):
+        cells = [
+            self.board[index]
+            or ("1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣")[index]
+            for index in range(9)
+        ]
+        marks = {"X": "❌", "O": "⭕"}
+        board_rows = [
+            " │ ".join(marks.get(cell, cell) for cell in cells[start:start + 3])
+            for start in (0, 3, 6)
+        ]
+        board_text = "\n".join(f"> {row}" for row in board_rows)
         if self.result:
-            description = f"> {self.result}"
+            status = f"> {self.result}\n"
         else:
             mark = "X" if self.current_player.id == self.player_x.id else "O"
-            description = (
+            status = (
                 f"> **X:** {self.player_x.mention}\n"
-                f"> **O:** {self.player_o.mention}\n>\n"
+                f"> **O:** {self.player_o.mention}\n"
                 f"> Na potezu: {self.current_player.mention} (**{mark}**)\n"
-                "> Klikni broj na tabli da odigraš potez."
             )
+        description = (
+            f"{status}\n"
+            f"**Tabla**\n{board_text}\n\n"
+            "> Za potez klikni odgovarajuće dugme odmah ispod embed-a."
+        )
         embed = discord.Embed(title="XO — Tic-Tac-Toe", description=description, color=_LP)
         embed.set_footer(text="Dva igrača • potezi na dugmad • rok poteza: 3 min")
         return embed

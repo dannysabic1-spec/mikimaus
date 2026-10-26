@@ -1,4 +1,4 @@
-# MONIKA BOT v4.5
+# MONIKA BOT v4.5.1
 
 Pakovanje sadrži novu kopiju bota sa standardnim Unicode emoji-jima, klikabilnim menijem mini-igara i multiplayer XO igrom koja se igra preko dugmadi.
 
@@ -37,6 +37,7 @@ Slash komande se sinhronizuju pri pokretanju. Može biti potrebno kratko vreme d
 - Pokreni `.xo @član` ili `/xo` i izaberi protivnika.
 - Izazivač igra **X**, označeni član igra **O**.
 - Igrači klikću dugmad 1–9 ispod table; samo igrač koji je na potezu može odigrati.
+- Trenutno stanje table se prikazuje i unutar embed-a. Discord ne dozvoljava da dugme bude fizički unutar embed-a, pa su klikabilna dugmad odmah ispod njega, u istoj poruci.
 - Pobeđuje prvi sa tri znaka u redu. Ako se tabla popuni, partija je nerešena.
 - U jednom kanalu može biti jedna aktivna XO partija. Neaktivna partija ističe posle 3 minuta.
 - Tabla je javna u kanalu da oba igrača mogu da igraju. Ostali članovi ne mogu praviti poteze.
