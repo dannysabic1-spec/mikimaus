@@ -21,7 +21,7 @@ except ImportError:
 #              KONFIGURACIJA
 # ══════════════════════════════════════════════
 BOT_NAME   = "MONIKA BOT"
-VERSION    = "v4.5.2"
+VERSION    = "v4.5.3"
 TOKEN      = os.environ.get("DISCORD_TOKEN")
 BOT_PREFIX = "."
 
@@ -7272,78 +7272,36 @@ async def poruka(
         return
 
     embed = discord.Embed(
-        title="Dobrodošli u našu zajednicu!",
+        title=f"🌷 Dobro nam došao/la u {ctx.guild.name}!",
         description=(
-            f"> Pozivamo te da nam se pridružiš na serveru **{ctx.guild.name}**.\n"
-            "> Očekuju te druženje, ljubavni sistem, virtuelna ekonomija, "
-            "kuće, ribolov i zabavne igre.\n"
-            ">\n"
-            f"> **Uđi na server:** {server_link}"
+            "✨ Baš nam je drago što si ovde!\n\n"
+            "Tražiš mesto za lepo druženje, nova poznanstva i dobre trenutke? "
+            f"**{ctx.guild.name}** te čeka raširenih ruku. 🤍\n\n"
+            f"[💌 Klikni ovde i pridruži se serveru]({server_link})\n\n"
+            "Vidimo se unutra! 🫶"
         ),
         color=_LP,
     )
     embed.add_field(
-        name="Ljubav i veze",
+        name="💫 Šta te čeka?",
         value=(
-            "> `.veza @Korisnik` — Pošalji prijedlog za vezu.\n"
-            "> `.profil [@Korisnik]` — Prikaži ljubavni profil.\n"
-            "> `.brak @Partner` — Pošalji prijedlog za brak.\n"
-            "> `.prsten [@Partner]` — Prikaži ili odaberi prsten.\n"
-            "> `.svadba` — Pokreni ceremoniju vjenčanja.\n"
-            "> `.obnova` — Obnovi bračne zavjete.\n"
-            "> `.zakletva [tekst]` — Dodaj bračnu zakletvu.\n"
-            "> `.razvod` — Prekini vezu ili brak.\n"
-            "> `.datum` · `.godisnjica` · `.ljubomora` · `.razina`\n"
-            "> `.statistika` · `.djeca` · `.beba` · `.album`"
+            "💬 Prijatna ekipa i razgovori\n"
+            "💞 Ljubavni sistem i zajedničke priče\n"
+            "🎮 Mini-igre, izazovi i zabava\n"
+            "🏡 Virtuelni dom, ekonomija i ribolov"
         ),
         inline=False,
     )
     embed.add_field(
-        name="Ljubavne aktivnosti i pokloni",
+        name="🤍 Kad stigneš",
         value=(
-            "> `.spavanje` · `.srce` · `.zagrljaj @Korisnik`\n"
-            "> `.poljubac @Korisnik` · `.ples @Korisnik`\n"
-            "> `.izlet` · `.vecera` · `.putovanje`\n"
-            "> `.poklon @Korisnik` · `.cvijece @Korisnik`\n"
-            "> `.cokolada @Korisnik` · `.ruza @Korisnik`\n"
-            "> `.ogrlica @Korisnik` · `.sat @Korisnik` · `.parfem @Korisnik`\n"
-            "> `.auto @Korisnik` · `.jahte @Korisnik`"
-        ),
-        inline=False,
-    )
-    embed.add_field(
-        name="Kako početi",
-        value=(
-            "> Sve prefix komande počinju tačkom (`.`).\n"
-            "> Koristi `.pomoc` za kompletan pregled bota.\n"
-            "> Upoznaj ekipu, pronađi partnera i uživaj u druženju!"
-        ),
-        inline=False,
-    )
-    embed.add_field(
-        name="Ekonomija i kuća",
-        value=(
-            "> `.ekonomija` · `.rad` · `.plata` · `.novac` · `.banka`\n"
-            "> `.uplati <iznos>` · `.podigni <iznos>` · `.transfer @Korisnik <iznos>`\n"
-            "> `.market` · `.kupi <predmet>` · `.pokloni @Korisnik <predmet>`\n"
-            "> `.kuca` · `.stan` · `.soba` · `.kuhinja` · `.spavaca`\n"
-            "> `.kupatilo` · `.vrt` · `.bazen` · `.garaza` · `.namjestaj`"
-        ),
-        inline=False,
-    )
-    embed.add_field(
-        name="Igre, ribolov i rang-liste",
-        value=(
-            "> `.casino coin <ulog>` · `.casino slot <ulog>` · `.counting 1`\n"
-            "> `.toplo-hladno` · `.kaladont` · `.pijte` · `.film` · `.istina` · `.izazov`\n"
-            "> `.pecanje` · `.ribnjak` · `.prodaj` · `.ribar`\n"
-            "> `.topljubav` · `.topxp` · `.topbogati` · `.topparovi` · `.topstanovi` · `.top-ribar`"
+            "Predstavi se, zaviri u kanale koji te zanimaju i priključi se razgovoru. "
+            "Ako ti zatreba pomoć, naša ekipa je tu za tebe. 🌸"
         ),
         inline=False,
     )
     if ctx.guild.icon:
         embed.set_thumbnail(url=ctx.guild.icon.url)
-    embed.set_footer(text=f"{BOT_NAME} {VERSION} • pozivnica")
 
     status_message = await ctx.send(
         f"Počinjem slati pozivnicu u DM za najviše **{limit} članova** "
