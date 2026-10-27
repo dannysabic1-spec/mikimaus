@@ -1,10 +1,11 @@
-# MONIKA BOT v4.5.3
+# MONIKA BOT v4.5.4
 
 Pakovanje sadrži novu kopiju bota sa standardnim Unicode emoji-jima, klikabilnim menijem mini-igara i multiplayer XO igrom koja se igra preko dugmadi.
 
 ## Sadržaj pakovanja
 
-- `monika_bot.py` — kompletna skripta bota.
+- `bot.py` — kompletna, ažurirana skripta za pokretanje.
+- `bot_original.py` — neizmenjena kopija originalnog korisnikovog fajla, samo kao rezervna kopija.
 - `requirements.txt` — Python biblioteke.
 - `README.md` — ovo uputstvo.
 
@@ -27,7 +28,7 @@ Pri prvom pokretanju bot pravi `ljubav_data.json` i rezervnu kopiju `ljubav_data
 6. Pokreni:
 
    ```bash
-   python monika_bot.py
+   python bot.py
    ```
 
 Slash komande se sinhronizuju pri pokretanju. Može biti potrebno kratko vreme dok se `/xo` i `/igre` pojave u Discordu.
@@ -71,7 +72,7 @@ Poruke i dugmad koriste standardne Unicode emoji-je — ne zavise od uploadovani
 
 Za punu funkcionalnost botu trebaju dozvole da vidi kanale, šalje poruke i embedove, čita istoriju, koristi reakcije, upravlja kanalima i upravlja ulogama. Za automatsku ulogu botova uloga mora biti iznad uloge koja se dodeljuje. Ograniči dozvole na kanale i mogućnosti koje stvarno koristiš.
 
-Komanda `.poruka` šalje pozivnicu servera kroz privatne poruke, najviše 100 članova po pokretanju, i dostupna je samo vlasniku bota ili servera. Pozivna poruka ima klikabilan link, kratak tekst dobrodošlice i pregled sadržaja servera — bez spiska bot komandi. Link se zadaje uz postojeću komandu, na primer `.poruka https://discord.gg/tvoj-link 100`. Koristi je samo u skladu sa pravilima Discorda i očekivanjima članova.
+Komanda `.poruka` šalje pozivnicu servera kroz privatne poruke, najviše 100 članova po pokretanju, i dostupna je samo vlasniku bota ili servera. Pozivna poruka ima klikabilan link i pregled servera bez spiska bot komandi; ističe dnevne evente, nagrade, Nitro, dekoracije, igre i druženje. Link se zadaje uz postojeću komandu, na primer `.poruka https://discord.gg/tvoj-link 100`. Koristi je samo u skladu sa pravilima Discorda i očekivanjima članova.
 
 ## Napomene
 
