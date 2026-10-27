@@ -21,7 +21,7 @@ except ImportError:
 #              KONFIGURACIJA
 # ══════════════════════════════════════════════
 BOT_NAME   = "MONIKA BOT"
-VERSION    = "v4.5.1"
+VERSION    = "v4.5.2"
 TOKEN      = os.environ.get("DISCORD_TOKEN")
 BOT_PREFIX = "."
 
@@ -285,9 +285,77 @@ def _remove_embed_blockquotes(value):
         }
     return value
 
+_EMBED_SECTION_HEADING_RE = re.compile(
+    r"^\s*>?\s*(?:\*\*(?P<bold>[^*\n]{1,80})\*\*|"
+    r"(?P<emoji>[\U0001F000-\U0001FAFF\u2600-\u27BF]+\ufe0f?)"
+    r"\s+(?P<plain>[A-Za-zĆČĐŠŽćčđšž][^:\n]{1,59}))\s*:?\s*$"
+)
+
+def _description_sections_to_fields(payload):
+    """Pretvori jasno označene naslove sekcija iz opisa u Discord embed fields."""
+    description = payload.get("description")
+    if not isinstance(description, str) or not description.strip():
+        return
+
+    lines = description.splitlines()
+    headings = []
+    for index, line in enumerate(lines):
+        match = _EMBED_SECTION_HEADING_RE.match(line)
+        if not match:
+            continue
+        heading = (
+            match.group("bold")
+            or " ".join(part for part in (match.group("emoji"), match.group("plain")) if part)
+            or ""
+        ).strip()
+        # Puni iskazi i rečenice ostaju u opisu; ovo prepoznaje kratke naslove.
+        if len(heading) > 80 or re.search(r"[.!?]", heading):
+            continue
+        headings.append((index, heading))
+
+    if not headings:
+        return
+
+    first_content = next(
+        (index for index, line in enumerate(lines) if line.strip()),
+        None,
+    )
+    # U jednoj poruci jedan emoji može biti obična reakcija. Pretvori jedan
+    # naslov samo ako je prvi sadržaj poruke; za više sekcija traži jasne naslove.
+    if len(headings) == 1 and headings[0][0] != first_content:
+        return
+
+    existing_fields = payload.get("fields", [])
+    if len(existing_fields) + len(headings) > 25:
+        return
+
+    prefix = "\n".join(lines[:headings[0][0]]).strip()
+    new_fields = []
+    for position, (line_index, heading) in enumerate(headings):
+        next_index = (
+            headings[position + 1][0]
+            if position + 1 < len(headings)
+            else len(lines)
+        )
+        value = "\n".join(lines[line_index + 1:next_index]).strip()
+        if not value or len(value) > 1024:
+            return
+        new_fields.append({
+            "name": heading[:256],
+            "value": value,
+            "inline": False,
+        })
+
+    if prefix:
+        payload["description"] = prefix
+    else:
+        payload.pop("description", None)
+    payload.setdefault("fields", []).extend(new_fields)
+
 def _clean_embed_to_dict(self):
     payload = _ORIGINAL_EMBED_TO_DICT(self)
     payload = _remove_embed_blockquotes(payload)
+    _description_sections_to_fields(payload)
 
     # Naslov se prikazuje unutar description-a, a ne kao poseban Discord
     # naslovni red. Tako svi embedovi imaju isti blockquote izgled.
@@ -6472,34 +6540,20 @@ class TicTacToeView(discord.ui.View):
             self.add_item(button)
 
     def make_embed(self):
-        cells = [
-            self.board[index]
-            or ("1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣")[index]
-            for index in range(9)
-        ]
-        marks = {"X": "❌", "O": "⭕"}
+        keycaps = ("1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣")
         board_rows = [
-            " │ ".join(marks.get(cell, cell) for cell in cells[start:start + 3])
+            "   ".join(keycaps[start:start + 3])
             for start in (0, 3, 6)
         ]
-        board_text = "\n".join(f"> {row}" for row in board_rows)
-        if self.result:
-            status = f"> {self.result}\n"
-        else:
-            mark = "X" if self.current_player.id == self.player_x.id else "O"
-            status = (
-                f"> **X:** {self.player_x.mention}\n"
-                f"> **O:** {self.player_o.mention}\n"
-                f"> Na potezu: {self.current_player.mention} (**{mark}**)\n"
-            )
         description = (
-            f"{status}\n"
-            f"**Tabla**\n{board_text}\n\n"
-            "> Za potez klikni odgovarajuće dugme odmah ispod embed-a."
+            f"{board_rows[0]}\n"
+            f"{board_rows[1]}\n"
+            f"{board_rows[2]}\n\n"
+            f"{self.player_x.mention} izazvao/la je {self.player_o.mention}"
         )
-        embed = discord.Embed(title="XO — Tic-Tac-Toe", description=description, color=_LP)
-        embed.set_footer(text="Dva igrača • potezi na dugmad • rok poteza: 3 min")
-        return embed
+        # Namjerno bez naslova, footera i opisa poteza: kompaktna tabla ostaje
+        # u embed-u, a X/O potezi se vide na klikabilnim dugmadima ispod nje.
+        return discord.Embed(description=description, color=_LP)
 
     def _refresh_buttons(self):
         for button in self.children:

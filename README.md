@@ -1,4 +1,4 @@
-# MONIKA BOT v4.5.1
+# MONIKA BOT v4.5.2
 
 Pakovanje sadrži novu kopiju bota sa standardnim Unicode emoji-jima, klikabilnim menijem mini-igara i multiplayer XO igrom koja se igra preko dugmadi.
 
@@ -37,7 +37,7 @@ Slash komande se sinhronizuju pri pokretanju. Može biti potrebno kratko vreme d
 - Pokreni `.xo @član` ili `/xo` i izaberi protivnika.
 - Izazivač igra **X**, označeni član igra **O**.
 - Igrači klikću dugmad 1–9 ispod table; samo igrač koji je na potezu može odigrati.
-- Trenutno stanje table se prikazuje i unutar embed-a. Discord ne dozvoljava da dugme bude fizički unutar embed-a, pa su klikabilna dugmad odmah ispod njega, u istoj poruci.
+- XO embed je namjerno mali: prikazuje samo brojeve 1–9 i ko je koga izazvao. X/O se vide na klikabilnim dugmadima ispod embeda; Discord ne dozvoljava dugmad fizički unutar embeda.
 - Pobeđuje prvi sa tri znaka u redu. Ako se tabla popuni, partija je nerešena.
 - U jednom kanalu može biti jedna aktivna XO partija. Neaktivna partija ističe posle 3 minuta.
 - Tabla je javna u kanalu da oba igrača mogu da igraju. Ostali članovi ne mogu praviti poteze.
@@ -56,7 +56,7 @@ Ostale postojeće igre zadržavaju svoje komande; meni je njihova brza pomoć. N
 
 ## Emoji-ji i izgled
 
-Poruke i dugmad koriste standardne Unicode emoji-je — ne zavise od uploadovanih emoji-ja, emoji ID-jeva ili pristupa Discord Developer Portal emoji-jima. Postojeći embedovi i paneli zadržavaju tamni MONIKA stil; `/igre` i `.igre` sada prikazuju interaktivni panel.
+Poruke i dugmad koriste standardne Unicode emoji-je — ne zavise od uploadovanih emoji-ja, emoji ID-jeva ili pristupa Discord Developer Portal emoji-jima. Embedovi s jasno označenim naslovima sekcija prikazuju te sekcije kao odvojena Discord polja; kratka obaveštenja ostaju kompaktna. Postojeći embedovi i paneli zadržavaju tamni MONIKA stil; `/igre` i `.igre` sada prikazuju interaktivni panel.
 
 ## Glavne funkcije
 
